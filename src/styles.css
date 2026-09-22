@@ -1,0 +1,149 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * LabFind design system — "Clinical Precision".
+ * Restrained teal / warm off-white palette, thin borders, minimal shadows.
+ * All colors are oklch. Add new semantic colors to :root and register them
+ * in @theme inline as --color-<name>: var(--<name>).
+ */
+
+@theme inline {
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-match-excellent: var(--match-excellent);
+  --color-match-good: var(--match-good);
+  --color-match-partial: var(--match-partial);
+  --color-match-low: var(--match-low);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --shadow-panel: 0 1px 2px oklch(0.22 0.011 200 / 0.05);
+  --shadow-raised: 0 6px 20px -12px oklch(0.22 0.011 200 / 0.28);
+}
+
+:root {
+  --radius: 10px;
+
+  /* #F7F7F3 */
+  --background: oklch(0.9744 0.0035 106.42);
+  /* #172426 */
+  --foreground: oklch(0.2437 0.0128 205.3);
+  --surface: oklch(1 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--foreground);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--foreground);
+
+  /* #0F5C5E */
+  --primary: oklch(0.4118 0.0567 194.2);
+  --primary-foreground: oklch(0.9877 0.0026 106.42);
+  --primary-soft: oklch(0.9557 0.0146 190);
+
+  --secondary: oklch(0.9502 0.0035 106.42);
+  --secondary-foreground: var(--foreground);
+  --muted: oklch(0.9502 0.0035 106.42);
+  --muted-foreground: oklch(0.5252 0.0128 200);
+  --accent: oklch(0.9557 0.0146 190);
+  --accent-foreground: var(--primary);
+
+  /* #3E8E68 */
+  --match-excellent: oklch(0.5697 0.0836 159.6);
+  --match-good: oklch(0.5697 0.0836 159.6);
+  /* #D39B3B */
+  --match-partial: oklch(0.7202 0.1136 79.3);
+  --match-low: oklch(0.5583 0.1937 27.3);
+
+  --destructive: oklch(0.5583 0.1937 27.3);
+  --destructive-foreground: oklch(0.9877 0.0026 106.42);
+
+  /* #E3E5E2 */
+  --border: oklch(0.9146 0.0039 145);
+  --border-strong: oklch(0.8492 0.0043 145);
+  --input: oklch(0.9146 0.0039 145);
+  --ring: oklch(0.4118 0.0567 194.2);
+
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--primary);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv01";
+  }
+
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.022em;
+  }
+}
+
+/* Small uppercase field/eyebrow label used across the app. */
+@utility label-caps {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-muted-foreground);
+}
+
+@utility hairline-y {
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
