@@ -6,11 +6,12 @@ import { SearchPanel } from "@/components/labfind/SearchPanel";
 import { LabCard } from "@/components/labfind/LabCard";
 import { MapView } from "@/components/labfind/MapView";
 import { MatchLegend } from "@/components/labfind/MatchScore";
-import { LABS, formatINR } from "@/data/labs";
+import { formatINR } from "@/data/labs";
 import { getTestById } from "@/data/tests";
 import { matchLab, sortMatches, SORT_LABELS, type SortKey } from "@/lib/scoring";
 import { toCriteria, validateResultsSearch, type ResultsSearch } from "@/lib/search-params";
 import { cn } from "@/lib/utils";
+import { useLabs } from "@/hooks/useLabs";
 
 export const Route = createFileRoute("/results")({
   validateSearch: (raw: Record<string, unknown>): ResultsSearch =>
@@ -59,6 +60,8 @@ function ResultsPage() {
   const navigate = useNavigate();
   const criteria = useMemo(() => toCriteria(search), [search]);
 
+  const { data: labs = [], isLoading: labsLoading, isError: labsError } = useLabs();
+
   const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
   const [sort, setSort] = useState<SortKey>("match");
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -67,8 +70,8 @@ function ResultsPage() {
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const allMatches = useMemo(
-    () => LABS.map((lab) => matchLab(lab, criteria)),
-    [criteria],
+    () => labs.map((lab) => matchLab(lab, criteria)),
+    [labs, criteria],
   );
 
   const filtered = useMemo(() => {
@@ -108,6 +111,18 @@ function ResultsPage() {
 
   return (
     <AppShell>
+      {/* Data-source status banner — shown only when Supabase fetch fails.
+          The page still works via placeholderData from the static mock. */}
+      {labsLoading && (
+        <div className="border-b border-border bg-secondary/60 px-5 py-2 text-center text-[12px] text-muted-foreground">
+          Loading live lab data…
+        </div>
+      )}
+      {labsError && (
+        <div className="border-b border-destructive/30 bg-destructive/8 px-5 py-2 text-center text-[12px] text-destructive">
+          Could not reach the lab database — showing cached data.
+        </div>
+      )}
       {/* Criteria bar — always shows what the score is being computed against. */}
       <div className="sticky top-16 z-30 border-b border-border bg-background/95 backdrop-blur-sm">
         <div className="mx-auto max-w-[1320px] px-5 py-3 lg:px-10">

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { CalendarCheck, Heart, Search, MapPin, FileText } from "lucide-react";
 import { AppShell } from "@/components/labfind/AppShell";
 import {
@@ -12,8 +12,13 @@ import { StageBadge } from "@/components/labfind/StatusTimeline";
 import { allAppointments } from "@/lib/booking-store";
 import { ADDRESSES, RECENT_SEARCHES, SAVED_LAB_IDS } from "@/data/appointments";
 import { getLabById, formatINR } from "@/data/labs";
+import { getSession } from "@/lib/api/auth";
 
 export const Route = createFileRoute("/dashboard")({
+  beforeLoad: async () => {
+    const session = await getSession();
+    if (!session) throw redirect({ to: "/login" });
+  },
   head: () => ({
     meta: [
       { title: "Your appointments and saved labs — LabFind" },

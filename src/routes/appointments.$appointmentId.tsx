@@ -1,11 +1,17 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { ArrowLeft, Phone, MapPin, Download, CalendarClock } from "lucide-react";
 import { AppShell } from "@/components/labfind/AppShell";
 import { StatusTimeline, StageBadge } from "@/components/labfind/StatusTimeline";
 import { findAppointment } from "@/lib/booking-store";
+import type { AppointmentTest } from "@/data/appointments";
 import { formatINR } from "@/data/labs";
+import { getSession } from "@/lib/api/auth";
 
 export const Route = createFileRoute("/appointments/$appointmentId")({
+  beforeLoad: async () => {
+    const session = await getSession();
+    if (!session) throw redirect({ to: "/login" });
+  },
   loader: ({ params }) => {
     const appointment = findAppointment(params.appointmentId);
     if (!appointment) throw notFound();
@@ -102,7 +108,7 @@ function TrackingPage() {
             <div className="border border-border bg-surface">
               <p className="label-caps border-b border-border px-5 py-3">Tests and pricing</p>
               <ul className="px-5 py-2">
-                {appointment.tests.map((t) => (
+                {appointment.tests.map((t: AppointmentTest) => (
                   <li
                     key={t.testId}
                     className="flex justify-between border-b border-border py-2 text-[13px] last:border-b-0"

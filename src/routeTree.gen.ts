@@ -13,6 +13,10 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as LabRouteImport } from './routes/lab'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as ResultsRouteImport } from './routes/results'
 import { Route as AppointmentsAppointmentIdRouteImport } from './routes/appointments.$appointmentId'
 import { Route as BookLabIdRouteImport } from './routes/book.$labId'
@@ -36,6 +40,26 @@ const DashboardRoute = DashboardRouteImport.update({
 const LabRoute = LabRouteImport.update({
   id: '/lab',
   path: '/lab',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResultsRoute = ResultsRouteImport.update({
@@ -65,6 +89,10 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRoute
   '/lab': typeof LabRoute
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/results': typeof ResultsRoute
   '/appointments/$appointmentId': typeof AppointmentsAppointmentIdRoute
   '/book/$labId': typeof BookLabIdRoute
@@ -75,6 +103,10 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRoute
   '/lab': typeof LabRoute
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/results': typeof ResultsRoute
   '/appointments/$appointmentId': typeof AppointmentsAppointmentIdRoute
   '/book/$labId': typeof BookLabIdRoute
@@ -86,6 +118,10 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRoute
   '/lab': typeof LabRoute
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/results': typeof ResultsRoute
   '/appointments/$appointmentId': typeof AppointmentsAppointmentIdRoute
   '/book/$labId': typeof BookLabIdRoute
@@ -98,6 +134,10 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/lab'
+    | '/login'
+    | '/signup'
+    | '/reset-password'
+    | '/auth/callback'
     | '/results'
     | '/appointments/$appointmentId'
     | '/book/$labId'
@@ -108,6 +148,10 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/lab'
+    | '/login'
+    | '/signup'
+    | '/reset-password'
+    | '/auth/callback'
     | '/results'
     | '/appointments/$appointmentId'
     | '/book/$labId'
@@ -118,6 +162,10 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/lab'
+    | '/login'
+    | '/signup'
+    | '/reset-password'
+    | '/auth/callback'
     | '/results'
     | '/appointments/$appointmentId'
     | '/book/$labId'
@@ -129,6 +177,10 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   DashboardRoute: typeof DashboardRoute
   LabRoute: typeof LabRoute
+  LoginRoute: typeof LoginRoute
+  SignupRoute: typeof SignupRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
   ResultsRoute: typeof ResultsRoute
   AppointmentsAppointmentIdRoute: typeof AppointmentsAppointmentIdRoute
   BookLabIdRoute: typeof BookLabIdRoute
@@ -193,6 +245,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LabsLabIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -201,6 +281,10 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   DashboardRoute: DashboardRoute,
   LabRoute: LabRoute,
+  LoginRoute: LoginRoute,
+  SignupRoute: SignupRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
   ResultsRoute: ResultsRoute,
   AppointmentsAppointmentIdRoute: AppointmentsAppointmentIdRoute,
   BookLabIdRoute: BookLabIdRoute,

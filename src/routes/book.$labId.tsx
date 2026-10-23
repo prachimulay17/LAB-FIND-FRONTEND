@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { ArrowLeft, Building2, Home, Check, Info } from "lucide-react";
 import { AppShell } from "@/components/labfind/AppShell";
 import { getLabById, formatINR } from "@/data/labs";
@@ -9,8 +9,13 @@ import { toCriteria, validateResultsSearch, type ResultsSearch } from "@/lib/sea
 import { ADDRESSES, TIME_SLOTS, type Appointment } from "@/data/appointments";
 import { addAppointment, nextAppointmentId } from "@/lib/booking-store";
 import { cn } from "@/lib/utils";
+import { getSession } from "@/lib/api/auth";
 
 export const Route = createFileRoute("/book/$labId")({
+  beforeLoad: async () => {
+    const session = await getSession();
+    if (!session) throw redirect({ to: "/login" });
+  },
   validateSearch: (raw: Record<string, unknown>): ResultsSearch => validateResultsSearch(raw),
   loader: ({ params }) => {
     const lab = getLabById(params.labId);

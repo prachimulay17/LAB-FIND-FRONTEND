@@ -12,46 +12,60 @@ import {
 import { AppShell } from "@/components/labfind/AppShell";
 import { MatchScore, MatchBreakdown } from "@/components/labfind/MatchScore";
 import { VerifiedBadge } from "@/components/labfind/LabCard";
-import { getLabById, formatINR } from "@/data/labs";
+import { formatINR } from "@/data/labs";
 import { getTestById } from "@/data/tests";
 import { matchLab } from "@/lib/scoring";
 import { toCriteria, validateResultsSearch, type ResultsSearch } from "@/lib/search-params";
+import { useLabById } from "@/hooks/useLabById";
 
 export const Route = createFileRoute("/labs/$labId")({
   validateSearch: (raw: Record<string, unknown>): ResultsSearch => validateResultsSearch(raw),
-  loader: ({ params }) => {
-    const lab = getLabById(params.labId);
-    if (!lab) throw notFound();
-    return { lab };
-  },
-  head: ({ loaderData }) => {
-    if (!loaderData) {
-      return {
-        meta: [
-          { title: "Laboratory unavailable — LabFind" },
-          { name: "robots", content: "noindex" },
-        ],
-      };
-    }
-    const { lab } = loaderData;
-    const title = `${lab.name}, ${lab.area} — tests, prices and appointments | LabFind`;
-    const description = `${lab.name} in ${lab.area}, ${lab.city}. ${lab.tagline}. Rated ${lab.rating.toFixed(1)} across ${lab.reviewCount} reviews.`;
-    return {
-      meta: [
-        { title },
-        { name: "description", content: description },
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
-      ],
-    };
-  },
+  head: () => ({
+    meta: [
+      { title: "Laboratory — LabFind" },
+      { name: "robots", content: "noindex" },
+    ],
+  }),
   component: LabDetailPage,
 });
 
 function LabDetailPage() {
-  const { lab } = Route.useLoaderData();
+  const { labId } = Route.useParams();
   const search = Route.useSearch();
   const criteria = toCriteria(search);
+
+  const { data: lab, isLoading, isError } = useLabById(labId);
+
+  // Not found — throw so TanStack Router renders the notFoundComponent
+  if (!isLoading && !isError && lab === null) throw notFound();
+
+  // Loading skeleton
+  if (isLoading || !lab) {
+    return (
+      <AppShell>
+        <div className="mx-auto max-w-[1320px] px-5 py-14 lg:px-10">
+          <div className="h-6 w-32 animate-pulse rounded bg-secondary" />
+          <div className="mt-6 h-10 w-2/3 animate-pulse rounded bg-secondary" />
+          <div className="mt-4 h-4 w-1/2 animate-pulse rounded bg-secondary" />
+        </div>
+      </AppShell>
+    );
+  }
+
+  // Fetch error
+  if (isError) {
+    return (
+      <AppShell>
+        <div className="mx-auto max-w-[720px] px-5 py-14 text-center lg:px-10">
+          <p className="text-[15px] font-semibold">Could not load laboratory details</p>
+          <p className="mt-2 text-[13px] text-muted-foreground">
+            Check your connection and try again.
+          </p>
+        </div>
+      </AppShell>
+    );
+  }
+
   const match = matchLab(lab, criteria);
 
   return (
