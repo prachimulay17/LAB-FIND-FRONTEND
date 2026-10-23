@@ -5,9 +5,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { signOut } from "@/lib/api/auth";
 
 const NAV_LINKS = [
-  { label: "Find a Lab", to: "/" },
-  { label: "How it works", to: "/" },
-  { label: "For Labs", to: "/" },
+  { label: "How it works", to: "/how-it-works" },
+  { label: "For Labs", to: "/lab" },
 ] as const;
 
 export function Navbar() {
